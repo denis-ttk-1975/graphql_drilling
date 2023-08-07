@@ -1,10 +1,13 @@
-const graphql = require('graphql');
+import graphql from 'graphql';
+import movies from './data.js';
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt } = graphql;
+
+console.log('movies: ', movies);
 
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
   }),
@@ -15,10 +18,14 @@ const Query = new GraphQLObjectType({
   fields: {
     movie: {
       type: MovieType,
-      args: { id: { type: GraphQLString } },
-      resolve(parent, args) {},
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return movies.find((item) => item.id == args.id);
+      },
     },
   },
 });
 
-module.exports = new GraphQLSchema({ query: Query });
+const schema = new GraphQLSchema({ query: Query });
+
+export default schema;
