@@ -1,6 +1,6 @@
 import graphql from 'graphql';
 import { movies, directors } from './data.js';
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLFloat } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLFloat } = graphql;
 
 console.log('movies: ', movies);
 
@@ -26,6 +26,12 @@ const DirectorType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
+    movies: {
+      type: new GraphQLList(MovieType),
+      resolve(parent, args) {
+        return movies.filter((item) => item.directorId == parent.id);
+      },
+    },
   }),
 });
 
@@ -44,6 +50,18 @@ const Query = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return directors.find((item) => item.id == args.id);
+      },
+    },
+    moviesAll: {
+      type: new GraphQLList(MovieType),
+      resolve(parent, args) {
+        return movies;
+      },
+    },
+    directorsAll: {
+      type: new GraphQLList(DirectorType),
+      resolve(parent, args) {
+        return directors;
       },
     },
   },
