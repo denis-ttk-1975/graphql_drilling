@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import graphqlHTTP from 'express-graphql';
+import cors from 'cors';
 import schema from './../schema/schema.js';
 
 const app = express();
@@ -8,6 +9,7 @@ const PORT = 3005;
 
 mongoose.connect('mongodb+srv://2den4u:denis@cluster0.struflw.mongodb.net/graphql_drill?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
+app.use(cors());
 app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
 
 const dbConnection = mongoose.connection;
