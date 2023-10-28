@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import { compose } from 'recompose';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 
 import { moviesQuery } from './queries';
 

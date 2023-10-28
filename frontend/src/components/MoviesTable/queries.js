@@ -1,8 +1,8 @@
-import { gql } from 'apollo-boost';
+import { gql } from '@apollo/client';
 
 export const moviesQuery = gql`
   query moviesAll {
-    movies {
+    moviesAll {
       id
       name
       genre
