@@ -1,7 +1,7 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   searchRoot: {
-    marginBottom: theme.spacing.unit * 3,
-    minHeight: theme.spacing.unit * 6,
+    marginBottom: theme.spacing(3),
+    minHeight: theme.spacing(9),
     display: 'flex',
   },
   root: {
