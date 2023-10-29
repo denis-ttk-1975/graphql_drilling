@@ -16,10 +16,10 @@ import DirectorsDialog from '../DirectorsDialog/DirectorsDialog';
 
 import withHocs from './DirectorsTableHoc';
 
-const directors = [
-  { id: 1, name: 'Quentin Tarantino', age: 55, movies: [ { name: 'Movie 1' }, { name: 'Movie 2' } ] },
-  { id: 2, name: 'Guy Ritchie', age: 50, movies: [ { name: 'Movie 1' }, { name: 'Movie 2' } ] }
-];
+// const directors = [
+//   { id: 1, name: 'Quentin Tarantino', age: 55, movies: [{ name: 'Movie 1' }, { name: 'Movie 2' }] },
+//   { id: 2, name: 'Guy Ritchie', age: 50, movies: [{ name: 'Movie 1' }, { name: 'Movie 2' }] },
+// ];
 
 class DirectorsTable extends React.Component {
   state = {
@@ -27,8 +27,12 @@ class DirectorsTable extends React.Component {
     openDialog: false,
   };
 
-  handleDialogOpen = () => { this.setState({ openDialog: true }); };
-  handleDialogClose = () => { this.setState({ openDialog: false }); };
+  handleDialogOpen = () => {
+    this.setState({ openDialog: true });
+  };
+  handleDialogClose = () => {
+    this.setState({ openDialog: false });
+  };
 
   handleClick = ({ currentTarget }, data) => {
     this.setState({
@@ -37,7 +41,9 @@ class DirectorsTable extends React.Component {
     });
   };
 
-  handleClose = () => { this.setState({ anchorEl: null }); };
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
 
   handleEdit = (row) => {
     this.props.onOpen(this.state.data);
@@ -51,7 +57,9 @@ class DirectorsTable extends React.Component {
 
   render() {
     const { anchorEl, openDialog, data: activeElem = {} } = this.state;
-    const { classes } = this.props;
+    const { classes, data = {} } = this.props;
+
+    const { directorsAll = [] } = data;
 
     return (
       <>
@@ -61,28 +69,39 @@ class DirectorsTable extends React.Component {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell align="right">Age</TableCell>
+                <TableCell align='right'>Age</TableCell>
                 <TableCell>Movies</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {directors.map(director => {
+              {directorsAll.map((director) => {
                 return (
                   <TableRow key={director.id}>
-                    <TableCell component="th" scope="row">{director.name}</TableCell>
-                    <TableCell align="right">{director.age}</TableCell>
-                    <TableCell>
-                      {director.movies.map((movie, key) => <div key={movie.name}>{`${key+1}. `}{movie.name}</div>)}
+                    <TableCell component='th' scope='row'>
+                      {director.name}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align='right'>{director.age}</TableCell>
+                    <TableCell>
+                      {director.movies.map((movie, key) => (
+                        <div key={movie.name}>
+                          {`${key + 1}. `}
+                          {movie.name}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell align='right'>
                       <>
-                        <IconButton color="inherit" onClick={(e) => this.handleClick(e, director)}>
+                        <IconButton color='inherit' onClick={(e) => this.handleClick(e, director)}>
                           <MoreIcon />
                         </IconButton>
-                        <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} >
-                          <MenuItem onClick={() => this.handleEdit(director)}><CreateIcon /> Edit</MenuItem>
-                          <MenuItem onClick={this.handleDelete}><DeleteIcon /> Delete</MenuItem>
+                        <Menu id='simple-menu' anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
+                          <MenuItem onClick={() => this.handleEdit(director)}>
+                            <CreateIcon /> Edit
+                          </MenuItem>
+                          <MenuItem onClick={this.handleDelete}>
+                            <DeleteIcon /> Delete
+                          </MenuItem>
                         </Menu>
                       </>
                     </TableCell>
@@ -95,6 +114,6 @@ class DirectorsTable extends React.Component {
       </>
     );
   }
-};
+}
 
 export default withHocs(DirectorsTable);
