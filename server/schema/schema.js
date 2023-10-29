@@ -1,7 +1,7 @@
 import graphql from 'graphql';
 import { movies, directors } from './data.js';
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLBoolean } = graphql;
 
 import Movies from '../models/movie.js';
 import Directors from '../models/director.js';
@@ -15,6 +15,8 @@ const MovieType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLNonNull(GraphQLString) },
     genre: { type: GraphQLNonNull(GraphQLString) },
+    isWatched: { type: GraphQLNonNull(GraphQLBoolean) },
+    rate: { type: GraphQLInt },
     directorId: { type: GraphQLID },
     director: {
       type: DirectorType,
@@ -55,9 +57,15 @@ const Mutation = new GraphQLObjectType({
     },
     addMovie: {
       type: MovieType,
-      args: { name: { type: GraphQLNonNull(GraphQLString) }, genre: { type: GraphQLNonNull(GraphQLString) }, directorId: { type: GraphQLID } },
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString) },
+        genre: { type: GraphQLNonNull(GraphQLString) },
+        directorId: { type: GraphQLID },
+        isWatched: { type: GraphQLNonNull(GraphQLBoolean) },
+        rate: { type: GraphQLInt },
+      },
       resolve: (parent, args) => {
-        const movie = new Movies({ name: args.name, genre: args.genre, directorId: args.directorId });
+        const movie = new Movies({ name: args.name, genre: args.genre, directorId: args.directorId, isWatched: args.isWatched, rate: args.rate });
         return movie.save();
       },
     },
@@ -77,9 +85,16 @@ const Mutation = new GraphQLObjectType({
     },
     updateMovie: {
       type: MovieType,
-      args: { id: { type: GraphQLID }, name: { type: GraphQLNonNull(GraphQLString) }, genre: { type: GraphQLNonNull(GraphQLString) }, directorId: { type: GraphQLID } },
+      args: {
+        id: { type: GraphQLID },
+        name: { type: GraphQLNonNull(GraphQLString) },
+        genre: { type: GraphQLNonNull(GraphQLString) },
+        directorId: { type: GraphQLID },
+        isWatched: { type: GraphQLNonNull(GraphQLBoolean) },
+        rate: { type: GraphQLInt },
+      },
       resolve: (parent, args) => {
-        return Movies.findByIdAndUpdate(args.id, { $set: { name: args.name, genre: args.genre, directorId: args.directorId } }, { new: true });
+        return Movies.findByIdAndUpdate(args.id, { $set: { name: args.name, genre: args.genre, directorId: args.directorId, isWatched: args.isWatched, rate: args.rate } }, { new: true });
       },
     },
     updateDirector: {

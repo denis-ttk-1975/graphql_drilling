@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const moviesQuery = gql`
-  query moviesAll {
+  query moviesQuery {
     moviesAll {
       id
       name
