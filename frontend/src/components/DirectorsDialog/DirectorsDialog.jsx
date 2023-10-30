@@ -8,34 +8,29 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import BlockIcon from '@material-ui/icons/Block';
 
-class DirectorsDialog extends React.Component {
+import withHocs from './DirectorsDialogHoc';
 
+class DirectorsDialog extends React.Component {
   handleDelete = () => {
-    const { id, handleClose } = this.props;
+    const { id, handleClose, deleteDirector } = this.props;
+    deleteDirector(id);
     handleClose();
-  }
+  };
 
   render() {
     const { open, handleClose } = this.props;
 
     return (
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Are you sire that you want to delete element?"}</DialogTitle>
+      <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
+        <DialogTitle id='alert-dialog-title'>{'Are you sire that you want to delete element?'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            If you click 'Confirm' this element will be removed from data base.
-          </DialogContentText>
+          <DialogContentText id='alert-dialog-description'>If you click 'Confirm' this element will be removed from data base.</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color='primary'>
             <BlockIcon /> Cancel
           </Button>
-          <Button onClick={this.handleDelete} color="primary" autoFocus>
+          <Button onClick={this.handleDelete} color='primary' autoFocus>
             <DeleteForeverIcon /> Confirm
           </Button>
         </DialogActions>
@@ -44,4 +39,4 @@ class DirectorsDialog extends React.Component {
   }
 }
 
-export default DirectorsDialog;
+export default withHocs(DirectorsDialog);
