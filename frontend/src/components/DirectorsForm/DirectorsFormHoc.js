@@ -4,11 +4,15 @@ import { graphql } from '@apollo/client/react/hoc';
 
 import { styles } from './styles';
 
-import { addDirectorMutation } from './mutations';
+import { addDirectorMutation, updateDirectorMutation } from './mutations';
 import { directorsQuery } from '../DirectorsTable/queries';
 
 const withGraphqlAdd = graphql(addDirectorMutation, {
   props: ({ mutate }) => ({ addDirector: (director) => mutate({ variables: director, refetchQueries: [{ query: directorsQuery }] }) }),
 });
 
-export default compose(withStyles(styles), withGraphqlAdd);
+const withGraphqlUpdate = graphql(updateDirectorMutation, {
+  props: ({ mutate }) => ({ updateDirector: (director) => mutate({ variables: director, refetchQueries: [{ query: directorsQuery }] }) }),
+});
+
+export default compose(withStyles(styles), withGraphqlAdd, withGraphqlUpdate);

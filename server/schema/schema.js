@@ -93,15 +93,15 @@ const Mutation = new GraphQLObjectType({
         isWatched: { type: GraphQLNonNull(GraphQLBoolean) },
         rate: { type: GraphQLInt },
       },
-      resolve: (parent, { name, genre, directorId, isWatched, rate }) => {
-        return Movies.findByIdAndUpdate(args.id, { $set: { name, genre, directorId, isWatched, rate } }, { new: true });
+      resolve: (parent, { id, name, genre, directorId, isWatched, rate }) => {
+        return Movies.findByIdAndUpdate(id, { $set: { name, genre, directorId, isWatched, rate } }, { new: true });
       },
     },
     updateDirector: {
       type: DirectorType,
       args: { id: { type: GraphQLID }, name: { type: GraphQLNonNull(GraphQLString) }, age: { type: GraphQLNonNull(GraphQLInt) } },
-      resolve: (parent, { name, age }) => {
-        return Directors.findByIdAndUpdate(args.id, { $set: { name, age } }, { new: true });
+      resolve: (parent, { id, name, age }) => {
+        return Directors.findByIdAndUpdate(id, { $set: { name, age } }, { new: true });
       },
     },
   },
